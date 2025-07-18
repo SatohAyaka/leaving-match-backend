@@ -9,6 +9,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	"SatohAyaka/leaving-match-backend/model"
 )
 
 var (
