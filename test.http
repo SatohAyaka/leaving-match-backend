@@ -1,1 +1,28 @@
 @baseURL= http://localhost:8085
+### フロントで扱ってる時刻情報をDateTime型へ変換する必要がある
+
+
+### BusTime_Data
+### 推奨バスの時刻の登録
+POST {{baseURL}}/api/bustime?member=1&member=2&previous=1170&nearest=1200&next=1230
+
+### 一覧の取得（フロント側で最新に絞ったりフィルタかける）
+GET {{baseURL}}/api/bustime?id=1
+
+
+### Vote_Data
+### 投票情報の登録(bustime_id=1,user_id=2)
+POST {{baseURL}}/api/1/2?previous=true&nearest=true
+
+### 投票結果の取得
+GET {{baseURL}}/api/1
+
+
+### Result_Data
+### 投票後選ばれたバスの時刻の登録(bustime_id=1)
+POST {{baseURL}}/api/result/1?time=1170&member=3
+
+### 投票結果の取得
+GET {{baseURL}}/api/result
+###
+GET {{baseURL}}/api/result/1
