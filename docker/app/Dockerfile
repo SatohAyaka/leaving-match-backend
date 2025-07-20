@@ -1,4 +1,4 @@
-FROM golang:1.23.3
+FROM golang:1.24.4
 
 
 # 作業ディレクトリの作成
