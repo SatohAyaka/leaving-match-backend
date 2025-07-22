@@ -19,6 +19,9 @@ func Router() {
 
 	versionEngine := r.Group("/api")
 	{
+		versionEngine.POST("/bustime", controller.CreateBusTimeHandler)
+		versionEngine.GET("/bustime", controller.GetBusTimeHandler)
+
 		versionEngine.GET("/result", controller.GetResultHandler)
 	}
 
