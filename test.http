@@ -12,7 +12,7 @@ GET {{baseURL}}/api/bustime?id=1
 
 ### Vote_Data
 ### 投票情報の登録(bustime_id=1,user_id=2)
-POST {{baseURL}}/api/1/2?previous=true&nearest=true
+POST {{baseURL}}/api/vote/1/2?vote=previous,nearest
 
 ### 投票結果の取得
 GET {{baseURL}}/api/1
