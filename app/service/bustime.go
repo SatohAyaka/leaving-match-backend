@@ -23,12 +23,12 @@ func (BusTimeService) CreateBusTime(member string, previous time.Time, nearest t
 
 	return bustime.BusTimeId, nil
 }
-func (BusTimeService) GetBusTime(busTimeId int64) ([]model.BusTime, error) {
+func (BusTimeService) GetBusTime(busTimeId []int64) ([]model.BusTime, error) {
 	bustimeData := []model.BusTime{}
 
 	query := lib.DB.Model(&model.BusTime{})
-	if busTimeId > 0 {
-		query = query.Where("BusTimeId = ?", busTimeId)
+	if len(busTimeId) > 0 {
+		query = query.Where("bustime_id IN?", busTimeId)
 	}
 
 	if err := query.Find(&bustimeData).Error; err != nil {

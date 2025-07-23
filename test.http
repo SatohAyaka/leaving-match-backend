@@ -7,7 +7,7 @@
 POST {{baseURL}}/api/bustime?member=1&member=2&previous=1170&nearest=1200&next=1230
 
 ### 一覧の取得（フロント側で最新に絞ったりフィルタかける）
-GET {{baseURL}}/api/bustime?id=1
+GET {{baseURL}}/api/bustime?id=1&id=2
 
 
 ### Vote_Data

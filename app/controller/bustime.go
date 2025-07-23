@@ -48,18 +48,20 @@ func CreateBusTimeHandler(c *gin.Context) {
 }
 
 func GetBusTimeHandler(c *gin.Context) {
-	busTimePass := c.Query("id")
-	if busTimePass == "" {
-		busTimePass = "0"
+	busTimeQuery := c.QueryArray("id")
+
+	var busTimeIds []int64
+	for _, idStr := range busTimeQuery {
+		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID: " + idStr})
+			return
+		}
+		busTimeIds = append(busTimeIds, id)
 	}
 
-	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
-		return
-	}
 	busTimeService := service.BusTimeService{}
-	bustimeData, err := busTimeService.GetBusTime(busTimeId)
+	bustimeData, err := busTimeService.GetBusTime(busTimeIds)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustimeData"})
 		return
