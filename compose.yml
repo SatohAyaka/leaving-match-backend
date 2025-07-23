@@ -20,8 +20,7 @@ services:
       interval: 20s
       retries: 10
     volumes:
-      - ./db-data:/var/lib/mysql
-      - ./docker-initdb:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
     networks:
       - leaving-match_network
 
