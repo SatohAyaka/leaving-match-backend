@@ -26,3 +26,9 @@ CREATE TABLE Result_Data (
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
 );
+
+CREATE TABLE User_Data(
+    user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    staywatch_user_id INT NOT NULL UNIQUE,
+    slack_user_id INT NOT NULL UNIQUE,
+);
