@@ -3,6 +3,7 @@ package service
 import (
 	"SatohAyaka/leaving-match-backend/lib"
 	"SatohAyaka/leaving-match-backend/model"
+	"log"
 )
 
 type VoteService struct{}
@@ -19,4 +20,31 @@ func (VoteService) CreateVote(bustimeId int64, userId int64, previous bool, near
 		return err
 	}
 	return nil
+}
+
+func (VoteService) GetVote(bustimeId int64) ([]model.Vote, error) {
+	allvote := []model.Vote{}
+
+	query := lib.DB.Model(&model.Vote{}).Where("bustime_id=?", bustimeId)
+	if err := query.Find(&allvote).Error; err != nil {
+		log.Printf("DBクエリエラー: %v", err)
+		return nil, err
+	}
+
+	// ユーザごとの最新投票取得
+	userVotes := make(map[int64]model.Vote)
+	for _, vote := range allvote {
+		existing, ok := userVotes[vote.UserId]
+		if !ok || vote.VoteId > existing.VoteId {
+			userVotes[vote.UserId] = vote
+		}
+	}
+
+	// ↑から一つのVoteデータに
+	votes := make([]model.Vote, 0, len(userVotes))
+	for _, vote := range userVotes {
+		votes = append(votes, vote)
+	}
+
+	return votes, nil
 }

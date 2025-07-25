@@ -51,3 +51,19 @@ func CreateVoteHandler(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "vote created"})
 }
+
+func GetVoteHandler(c *gin.Context) {
+	busTimePass := c.Param("bustimeId")
+	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
+		return
+	}
+	voteService := service.VoteService{}
+	votes, err := voteService.GetVote(busTimeId)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get votes"})
+		return
+	}
+	c.JSON(http.StatusOK, votes)
+}
