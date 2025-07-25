@@ -15,7 +15,7 @@ GET {{baseURL}}/api/bustime?id=1
 POST {{baseURL}}/api/vote/1/2?vote=previous,nearest
 
 ### 投票結果の取得
-GET {{baseURL}}/api/1
+GET {{baseURL}}/api/vote/1
 
 
 ### Result_Data
