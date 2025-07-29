@@ -20,9 +20,9 @@ GET {{baseURL}}/api/vote/1
 
 ### Result_Data
 ### 投票後選ばれたバスの時刻の登録(bustime_id=1)
-POST {{baseURL}}/api/result/1?time=1170&member=3
+POST {{baseURL}}/api/result/1
 
 ### 投票結果の取得
 GET {{baseURL}}/api/result
 ###
-GET {{baseURL}}/api/result/1
+GET {{baseURL}}/api/result?id=1
