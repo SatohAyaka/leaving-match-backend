@@ -53,7 +53,10 @@ func CreateVoteHandler(c *gin.Context) {
 }
 
 func GetVoteHandler(c *gin.Context) {
-	busTimePass := c.Param("bustimeId")
+	busTimePass := c.Query("id")
+	if busTimePass == "" {
+		busTimePass = "0"
+	}
 	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
