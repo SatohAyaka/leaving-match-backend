@@ -7,6 +7,13 @@ CREATE TABLE BusTime_Data (
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
+CREATE TABLE Prediction_Data(
+    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    prediction_time DATETIME,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+);
+
 CREATE TABLE Vote_Data (
     vote_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bustime_id INT,
