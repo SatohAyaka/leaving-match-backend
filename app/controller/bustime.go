@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -28,16 +27,8 @@ func CreateBusTimeHandler(c *gin.Context) {
 		return
 	}
 
-	members := c.QueryArray("member")
-	if len(members) == 0 {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "at least one member ID is required"})
-		return
-	}
-
-	memberString := strings.Join(members, ",")
-
 	bustimeService := service.BusTimeService{}
-	bustimeId, err := bustimeService.CreateBusTime(memberString, previousTime, nearestTime, nextTime)
+	bustimeId, err := bustimeService.CreateBusTime(previousTime, nearestTime, nextTime)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
