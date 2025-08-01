@@ -1,16 +1,8 @@
 CREATE TABLE BusTime_Data (
     bustime_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    member_id VARCHAR(100), --','区切り
     previous DATETIME,
     nearest DATETIME,
     next DATETIME,
-    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-);
-
-CREATE TABLE Prediction_Data(
-    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    prediction_time DATETIME,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
@@ -34,8 +26,18 @@ CREATE TABLE Result_Data (
     FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
 );
 
+CREATE TABLE Prediction_Data(
+    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    bustime_id INT,
+    user_id INT,
+    prediction_time DATETIME,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
+);
+
+
 CREATE TABLE User_Data(
-    user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    staywatch_user_id INT NOT NULL UNIQUE,
+    backend_user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
     slack_user_id INT NOT NULL UNIQUE,
 );
