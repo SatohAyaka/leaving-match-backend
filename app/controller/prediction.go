@@ -37,3 +37,25 @@ func CreatePredictionHandler(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "prediction created"})
 }
+
+func GetPredictionHandler(c *gin.Context) {
+	busTimePass := c.Param("bustimeId")
+	if busTimePass == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
+		return
+	}
+	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
+		return
+	}
+
+	predictionService := service.PredictionService{}
+	predictions, err := predictionService.GetPrediction(busTimeId)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get prediction Data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, predictions)
+}
