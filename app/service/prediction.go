@@ -3,6 +3,7 @@ package service
 import (
 	"SatohAyaka/leaving-match-backend/lib"
 	"SatohAyaka/leaving-match-backend/model"
+	"log"
 	"time"
 )
 
@@ -20,4 +21,18 @@ func (PredictionService) CreatePrediction(busTimeId int64, userId int64, predict
 	}
 
 	return nil
+}
+
+func (PredictionService) GetPrediction(busTimeId int64) ([]model.Prediction, error) {
+	predictionData := []model.Prediction{}
+
+	query := lib.DB.Model(&model.Prediction{})
+	if busTimeId > 0 {
+		query = query.Where("bustime_id = ?", busTimeId)
+	}
+	if err := query.Find(&predictionData).Error; err != nil {
+		log.Printf("DBクエリエラー: %v", err)
+		return nil, err
+	}
+	return predictionData, nil
 }

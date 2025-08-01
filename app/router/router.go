@@ -23,6 +23,7 @@ func Router() {
 		versionEngine.GET("/bustime", controller.GetBusTimeHandler)
 
 		versionEngine.POST("/prediction/:bustimeId", controller.CreatePredictionHandler)
+		versionEngine.GET("/prediction/:bustimeId", controller.GetPredictionHandler)
 
 		versionEngine.POST("/vote/:bustimeId/:userId", controller.CreateVoteHandler)
 		versionEngine.GET("/vote/:bustimeId", controller.GetVoteHandler)
