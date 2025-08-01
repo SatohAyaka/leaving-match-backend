@@ -67,11 +67,6 @@ func CreateResultHandler(c *gin.Context) {
 		}
 	}
 
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create result"})
-		return
-	}
-
 	c.JSON(http.StatusCreated, gin.H{"result_id": resultId})
 
 }
