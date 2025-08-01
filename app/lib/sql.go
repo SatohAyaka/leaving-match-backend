@@ -21,7 +21,7 @@ var (
 func InitDB() *gorm.DB {
 	once.Do(func() {
 		dsn := fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s?parseTime=true",
+			"%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Asia%%2FTokyo",
 			os.Getenv("MYSQL_USER"),
 			os.Getenv("MYSQL_PASSWORD"),
 			os.Getenv("MYSQL_HOST"),
