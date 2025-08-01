@@ -102,13 +102,13 @@ func VotingResult(votes []model.Vote) (previousVote int64, nearestVote int64, ne
 	nearest := 0
 	next := 0
 	for _, vote := range votes {
-		if vote.Previous == true {
+		if vote.Previous {
 			previous += 1
 		}
-		if vote.Nearest == true {
+		if vote.Nearest {
 			nearest += 1
 		}
-		if vote.Next == true {
+		if vote.Next {
 			next += 1
 		}
 	}
