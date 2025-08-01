@@ -50,13 +50,13 @@ func GetBusTimeHandler(c *gin.Context) {
 		return
 	}
 	busTimeService := service.BusTimeService{}
-	bustimeData, err := busTimeService.GetBusTime(busTimeId)
+	bustimes, err := busTimeService.GetBusTime(busTimeId)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustimeData"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime data"})
 		return
 	}
 
-	c.JSON(http.StatusOK, bustimeData)
+	c.JSON(http.StatusOK, bustimes)
 }
 
 func ParseQueryToTime(query string, errorlabel string) (time.Time, error) {

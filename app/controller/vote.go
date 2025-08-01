@@ -65,7 +65,7 @@ func GetVoteHandler(c *gin.Context) {
 	voteService := service.VoteService{}
 	votes, err := voteService.GetVote(busTimeId)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get votes"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get vote data"})
 		return
 	}
 	c.JSON(http.StatusOK, votes)

@@ -53,7 +53,7 @@ func GetPredictionHandler(c *gin.Context) {
 	predictionService := service.PredictionService{}
 	predictions, err := predictionService.GetPrediction(busTimeId)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get prediction Data"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get prediction data"})
 		return
 	}
 
