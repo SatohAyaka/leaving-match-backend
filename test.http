@@ -1,13 +1,19 @@
 @baseURL= http://localhost:8085
-### フロントで扱ってる時刻情報をDateTime型へ変換する必要がある
 
 
 ### BusTime_Data
 ### 推奨バスの時刻の登録
-POST {{baseURL}}/api/bustime?member=1&member=2&previous=1170&nearest=1200&next=1230
+POST {{baseURL}}/api/bustime?previous=1170&nearest=1200&next=1230
 
 ### 一覧の取得（フロント側で最新に絞ったりフィルタかける）
 GET {{baseURL}}/api/bustime?id=1
+
+
+### 対象メンバの退室予測時刻
+POST {{baseURL}}/api/prediction/1?user-id=1&time=1170
+
+### BusTimeIDに対応する対象メンバ複数人の取得(カラム数で対象メンバの数も取得できる)
+GET {{baseURL}}/api/prediction/1
 
 
 ### Vote_Data

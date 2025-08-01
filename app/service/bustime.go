@@ -10,9 +10,8 @@ import (
 
 type BusTimeService struct{}
 
-func (BusTimeService) CreateBusTime(member string, previous time.Time, nearest time.Time, next time.Time) (int64, error) {
+func (BusTimeService) CreateBusTime(previous time.Time, nearest time.Time, next time.Time) (int64, error) {
 	bustime := model.BusTime{
-		MemberId:     member,
 		PreviousTime: previous,
 		NearestTime:  nearest,
 		NextTime:     next,
