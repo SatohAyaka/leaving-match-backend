@@ -16,8 +16,8 @@ func CreatePredictionHandler(c *gin.Context) {
 		return
 	}
 
-	userIdQuery := c.Query("user-id")
-	userId, err := strconv.ParseInt(userIdQuery, 10, 64)
+	userIdPass := c.Param("userId")
+	userId, err := strconv.ParseInt(userIdPass, 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
 		return
