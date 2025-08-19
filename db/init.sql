@@ -7,9 +7,9 @@ CREATE TABLE Prediction_Data(
 
 CREATE TABLE Sammary_Data (
     sammary_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prediction_id INT,
-    bustime_id INT,
-    result_id INT,
+    prediction_id INT UNIQUE,
+    bustime_id INT UNIQUE,
+    result_id INT UNIQUE,
     FOREIGN KEY(prediction_id)REFERENCES Prediction_Data(prediction_id)
 );
 
