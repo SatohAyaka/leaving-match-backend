@@ -23,12 +23,12 @@ func (PredictionService) CreatePrediction(predictionId int64, userId int64, pred
 	return nil
 }
 
-func (PredictionService) GetPrediction(busTimeId int64) ([]model.Prediction, error) {
+func (PredictionService) GetPrediction(predictionId int64) ([]model.Prediction, error) {
 	predictions := []model.Prediction{}
 
 	query := lib.DB.Model(&model.Prediction{})
-	if busTimeId > 0 {
-		query = query.Where("bustime_id = ?", busTimeId)
+	if predictionId > 0 {
+		query = query.Where("prediction_id = ?", predictionId)
 	}
 	if err := query.Find(&predictions).Error; err != nil {
 		log.Printf("DBクエリエラー: %v", err)

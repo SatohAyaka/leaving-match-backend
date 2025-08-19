@@ -21,12 +21,12 @@ func (ResultService) CreateResult(sammaryId int64, busTime time.Time, member int
 	return results.ResultId, nil
 }
 
-func (ResultService) GetResult(busTimeId int64) ([]model.Result, error) {
+func (ResultService) GetResult(sammaryId int64) ([]model.Result, error) {
 	results := []model.Result{}
 
 	query := lib.DB.Model(&model.Result{})
-	if busTimeId > 0 {
-		query = query.Where("bustime_id = ?", busTimeId)
+	if sammaryId > 0 {
+		query = query.Where("sammary_id = ?", sammaryId)
 	}
 
 	if err := query.Find(&results).Error; err != nil {

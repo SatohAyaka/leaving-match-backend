@@ -22,12 +22,12 @@ func (VoteService) CreateVote(sammaryId int64, userId int64, previous bool, near
 	return nil
 }
 
-func (VoteService) GetVote(busTimeId int64) ([]model.Vote, error) {
+func (VoteService) GetVote(sammaryId int64) ([]model.Vote, error) {
 	allvote := []model.Vote{}
 
 	query := lib.DB.Model(&model.Vote{})
-	if busTimeId > 0 {
-		query = query.Where("bustime_id = ?", busTimeId)
+	if sammaryId > 0 {
+		query = query.Where("sammary_id = ?", sammaryId)
 	}
 	if err := query.Find(&allvote).Error; err != nil {
 		log.Printf("DBクエリエラー: %v", err)
