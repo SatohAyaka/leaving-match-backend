@@ -4,7 +4,7 @@ import "time"
 
 type Vote struct {
 	VoteId      int64     `gorm:"column:vote_id;primaryKey;autoIncrement"`
-	BusTimeId   int64     `gorm:"column:bustime_id"`
+	SammaryId   int64     `gorm:"column:bustime_id"`
 	UserId      int64     `gorm:"column:user_id"`
 	Previous    bool      `gorm:"column:previous"`
 	Nearest     bool      `gorm:"column:nearest"`
