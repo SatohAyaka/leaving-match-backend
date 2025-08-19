@@ -34,7 +34,7 @@ func InitDB() *gorm.DB {
 		if err != nil {
 			log.Fatalf("DB connect error: %v", err)
 		}
-		db.AutoMigrate(&model.BusTime{}, &model.Vote{}, &model.Result{}, &model.User{}, &model.Prediction{})
+		db.AutoMigrate(&model.BusTime{}, &model.Vote{}, &model.Result{}, &model.User{}, &model.Prediction{}, &model.Sammary{})
 		DB = db
 	})
 	return DB
