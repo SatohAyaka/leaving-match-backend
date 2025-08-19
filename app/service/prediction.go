@@ -9,9 +9,9 @@ import (
 
 type PredictionService struct{}
 
-func (PredictionService) CreatePrediction(busTimeId int64, userId int64, predictionTime time.Time) error {
+func (PredictionService) CreatePrediction(predictionId int64, userId int64, predictionTime time.Time) error {
 	prediction := model.Prediction{
-		BusTimeId:      busTimeId,
+		PredictionId:   predictionId,
 		UserId:         userId,
 		PredictionTime: predictionTime,
 	}

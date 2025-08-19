@@ -9,9 +9,9 @@ import (
 
 type ResultService struct{}
 
-func (ResultService) CreateResult(busTimeId int64, busTime time.Time, member int64) (int64, error) {
+func (ResultService) CreateResult(sammaryId int64, busTime time.Time, member int64) (int64, error) {
 	results := model.Result{
-		BusTimeId: busTimeId,
+		SammaryId: sammaryId,
 		BusTime:   busTime,
 		Member:    member,
 	}
