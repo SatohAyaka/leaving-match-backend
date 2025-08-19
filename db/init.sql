@@ -10,6 +10,7 @@ CREATE TABLE Sammary_Data (
     prediction_id INT UNIQUE,
     bustime_id INT UNIQUE,
     result_id INT UNIQUE,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(prediction_id)REFERENCES Prediction_Data(prediction_id)
 );
 
