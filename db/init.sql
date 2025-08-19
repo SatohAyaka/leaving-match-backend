@@ -1,3 +1,20 @@
+CREATE TABLE Prediction_Data(
+    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    bustime_id INT,
+    user_id INT,
+    prediction_time DATETIME,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
+);
+
+CREATE TABLE Sammary_Data (
+    sammary_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prediction_id INT,
+    bustime_id INT,
+    result_id INT,
+    FOREIGN KEY(prediction_id)REFERENCES Prediction_Data(prediction_id)
+);
+
 CREATE TABLE BusTime_Data (
     bustime_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     previous DATETIME,
@@ -25,16 +42,6 @@ CREATE TABLE Result_Data (
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
 );
-
-CREATE TABLE Prediction_Data(
-    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    bustime_id INT,
-    user_id INT,
-    prediction_time DATETIME,
-    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
-);
-
 
 CREATE TABLE User_Data(
     backend_user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
