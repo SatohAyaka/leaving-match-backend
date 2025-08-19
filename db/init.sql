@@ -23,22 +23,22 @@ CREATE TABLE BusTime_Data (
 
 CREATE TABLE Vote_Data (
     vote_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    bustime_id INT,
+    sammary_id INT,
     user_id INT,
     previous BOOLEAN DEFAULT FALSE,
     nearest BOOLEAN DEFAULT FALSE,
     next BOOLEAN DEFAULT FALSE,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
+    FOREIGN KEY (sammary_id) REFERENCES Sammary_Data(sammary_id)
 );
 
 CREATE TABLE Result_Data (
     result_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    bustime_id INT,
+    sammary_id INT NOT NULL UNIQUE,
     bus_time DATETIME,
     member INT,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
+    FOREIGN KEY (sammary_id) REFERENCES Sammary_Data(sammary_id)
 );
 
 CREATE TABLE User_Data(
