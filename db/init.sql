@@ -1,10 +1,8 @@
 CREATE TABLE Prediction_Data(
-    prediction_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    bustime_id INT,
+    prediction_id INT,
     user_id INT,
     prediction_time DATETIME,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
 );
 
 CREATE TABLE Sammary_Data (
