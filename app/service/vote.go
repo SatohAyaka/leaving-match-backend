@@ -8,9 +8,9 @@ import (
 
 type VoteService struct{}
 
-func (VoteService) CreateVote(sammaryId int64, userId int64, previous bool, nearest bool, next bool) error {
+func (VoteService) CreateVote(bustimeId int64, userId int64, previous bool, nearest bool, next bool) error {
 	vote := model.Vote{
-		SammaryId: sammaryId,
+		BusTimeId: bustimeId,
 		UserId:    userId,
 		Previous:  previous,
 		Nearest:   nearest,
