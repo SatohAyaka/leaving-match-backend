@@ -9,9 +9,9 @@ CREATE TABLE Recommended_Data (
 CREATE TABLE BusTime_Data (
     bustime_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recommended_id INT NOT NULL UNIQUE,
-    previous DATETIME,
-    nearest DATETIME,
-    next DATETIME,
+    previous_time DATETIME,
+    nearest_time DATETIME,
+    next_time DATETIME,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     end_date DATETIME,
     FOREIGN KEY (recommended_id) REFERENCES Recommended_Data(recommended_id)
@@ -39,6 +39,6 @@ CREATE TABLE Result_Data (
 
 CREATE TABLE User_Data(
     backend_user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE,
+    staywatch_user_id INT NOT NULL UNIQUE,
     slack_user_id INT NOT NULL UNIQUE,
 );
