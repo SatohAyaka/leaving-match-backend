@@ -10,18 +10,20 @@ import (
 
 type BusTimeService struct{}
 
-func (BusTimeService) CreateBusTime(previous time.Time, nearest time.Time, next time.Time) (int64, error) {
+func (BusTimeService) CreateBusTime(recommendedId int64, previous time.Time, nearest time.Time, next time.Time, endtime time.Time) (model.BusTime, error) {
 	bustime := model.BusTime{
-		PreviousTime: previous,
-		NearestTime:  nearest,
-		NextTime:     next,
+		RecommendedId: recommendedId,
+		PreviousTime:  previous,
+		NearestTime:   nearest,
+		NextTime:      next,
+		EndTime:       endtime,
 	}
 
 	if err := lib.DB.Create(&bustime).Error; err != nil {
-		return 0, err
+		return model.BusTime{}, err
 	}
 
-	return bustime.BusTimeId, nil
+	return bustime, nil
 }
 func (BusTimeService) GetBusTime(busTimeId int64) ([]model.BusTime, error) {
 	bustimes := []model.BusTime{}
