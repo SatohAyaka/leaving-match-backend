@@ -19,17 +19,20 @@ func Router() {
 
 	versionEngine := r.Group("/api")
 	{
-		versionEngine.POST("/bustime", controller.CreateBusTimeHandler)
-		versionEngine.GET("/bustime", controller.GetBusTimeHandler)
+		versionEngine.POST("/recommended", controller.CreateRecommendedHandler)
+		versionEngine.GET("/recommended/latest/status", controller.GetLatestRecommendedStatusHandler)
+		versionEngine.GET("/recommended/latest/members", controller.GetLatestRecommendedMembersHandler)
 
-		versionEngine.POST("/prediction/:bustimeId/:userId", controller.CreatePredictionHandler)
-		versionEngine.GET("/prediction/:bustimeId", controller.GetPredictionHandler)
+		versionEngine.POST("/bustime/:recommendedId", controller.CreateBusTimeHandler)
+		versionEngine.GET("/bustime/:bustimeId", controller.GetBusTimeByIdHandler)
+		versionEngine.GET("/bustime/latest", controller.GetLatestBusTimeHandler)
 
-		versionEngine.POST("/vote/:bustimeId/:userId", controller.CreateVoteHandler)
+		versionEngine.POST("/vote/:bustimeId/:staywatchUserId", controller.CreateVoteHandler)
 		versionEngine.GET("/vote/:bustimeId", controller.GetVoteHandler)
 
 		versionEngine.POST("/result/:bustimeId", controller.CreateResultHandler)
-		versionEngine.GET("/result", controller.GetResultHandler)
+		versionEngine.GET("/result/:bustimeId", controller.GetResultHandler)
+		versionEngine.GET("/result/latest", controller.GetLatestResultHandler)
 	}
 
 	r.Run(":8085")

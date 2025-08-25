@@ -92,6 +92,8 @@ func GetResultHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, results)
 }
 
+func GetLatestResultHandler(c *gin.Context) {}
+
 func VotingResult(votes []model.Vote) (previousVote int64, nearestVote int64, nextVote int64) {
 	previous := 0
 	nearest := 0
