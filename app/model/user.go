@@ -1,10 +1,10 @@
 package model
 
 type User struct {
-	BackendUserId   int64  `gorm:"column:backend_user_id"`
-	StayWatchUserId int64  `gorm:"column:staywatch_user_id"`
-	SlackUserId     int64  `gorm:"column:slack_user_id"`
-	UserName        string `gorm:"column:user_name"`
+	BackendUserId   int64  `gorm:"column:backend_user_id;primaryKey;autoIncrement"`
+	StayWatchUserId int64  `gorm:"column:staywatch_user_id;uniqueIndex"`
+	SlackUserId     int64  `gorm:"column:slack_user_id;uniqueIndex"`
+	UserName        string `gorm:"column:user_name;uniqueIndex"`
 }
 
 func (User) TableName() string { return "User_Data" }
