@@ -79,6 +79,8 @@ func GetBusTimeByIdHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, bustimes)
 }
 
+func GetLatestBusTimeHandler(c *gin.Context) {}
+
 func ParseQueryToTime(query string, errorlabel string) (time.Time, error) {
 	if query == "" {
 		return time.Time{}, fmt.Errorf("%s bus time choice is required", errorlabel)
