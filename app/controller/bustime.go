@@ -13,6 +13,10 @@ import (
 func CreateBusTimeHandler(c *gin.Context) {
 	recommendedPass := c.Param("recommendedId")
 	recommendedId, err := strconv.ParseInt(recommendedPass, 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	previousTime, err := ParseQueryToTime(c.Query("previous"), "previous")
 	if err != nil {
