@@ -1,6 +1,8 @@
 CREATE TABLE Recommended_Data (
     recommended_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recommended_time DATETIME,
+    member_id STRING NOT NULL,
+    status BOOLEAN,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
@@ -18,7 +20,7 @@ CREATE TABLE BusTime_Data (
 CREATE TABLE Vote_Data (
     vote_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bustime_id INT,
-    user_id INT,
+    backend_user_id INT,
     previous BOOLEAN DEFAULT FALSE,
     nearest BOOLEAN DEFAULT FALSE,
     next BOOLEAN DEFAULT FALSE,
