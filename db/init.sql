@@ -1,10 +1,3 @@
-CREATE TABLE Prediction_Data(
-    prediction_id INT NOT NULL,
-    user_id INT NOT NULL,
-    prediction_time DATETIME,
-    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-);
-
 CREATE TABLE Recommended_Data (
     recommended_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recommended_time DATETIME,
