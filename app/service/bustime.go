@@ -10,7 +10,7 @@ import (
 
 type BusTimeService struct{}
 
-func (BusTimeService) CreateBusTime(recommendedId int64, previous time.Time, nearest time.Time, next time.Time, endtime time.Time) (model.BusTime, error) {
+func (BusTimeService) CreateBusTime(recommendedId int64, previous time.Time, nearest time.Time, next time.Time, endtime time.Time) (int64, error) {
 	bustime := model.BusTime{
 		RecommendedId: recommendedId,
 		PreviousTime:  previous,
@@ -20,10 +20,10 @@ func (BusTimeService) CreateBusTime(recommendedId int64, previous time.Time, nea
 	}
 
 	if err := lib.DB.Create(&bustime).Error; err != nil {
-		return model.BusTime{}, err
+		return 0, err
 	}
 
-	return bustime, nil
+	return bustime.BusTimeId, nil
 }
 func (BusTimeService) GetBusTime(busTimeId int64) ([]model.BusTime, error) {
 	bustimes := []model.BusTime{}
