@@ -10,11 +10,11 @@ type VoteService struct{}
 
 func (VoteService) CreateVote(bustimeId int64, userId int64, previous bool, nearest bool, next bool) error {
 	vote := model.Vote{
-		BusTimeId: bustimeId,
-		UserId:    userId,
-		Previous:  previous,
-		Nearest:   nearest,
-		Next:      next,
+		BusTimeId:     bustimeId,
+		BackendUserId: userId,
+		Previous:      previous,
+		Nearest:       nearest,
+		Next:          next,
 	}
 	if err := lib.DB.Create(&vote).Error; err != nil {
 		return err
@@ -37,9 +37,9 @@ func (VoteService) GetVote(busTimeId int64) ([]model.Vote, error) {
 	// ユーザごとの最新投票取得
 	userVotes := make(map[int64]model.Vote)
 	for _, vote := range allvote {
-		existing, ok := userVotes[vote.UserId]
+		existing, ok := userVotes[vote.BackendUserId]
 		if !ok || vote.VoteId > existing.VoteId {
-			userVotes[vote.UserId] = vote
+			userVotes[vote.BackendUserId] = vote
 		}
 	}
 
