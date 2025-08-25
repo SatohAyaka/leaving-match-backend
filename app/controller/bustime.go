@@ -11,6 +11,9 @@ import (
 )
 
 func CreateBusTimeHandler(c *gin.Context) {
+	recommendedPass := c.Param("recommendedId")
+	recommendedId, err := strconv.ParseInt(recommendedPass, 10, 64)
+
 	previousTime, err := ParseQueryToTime(c.Query("previous"), "previous")
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -27,8 +30,21 @@ func CreateBusTimeHandler(c *gin.Context) {
 		return
 	}
 
+	intPreviousTime, err := strconv.ParseInt(c.Query("previous"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	intEndTime := intPreviousTime - 20
+	strEndTime := strconv.FormatInt(intEndTime, 10)
+	endTime, err := ParseQueryToTime(strEndTime, "endTime")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	bustimeService := service.BusTimeService{}
-	bustimeId, err := bustimeService.CreateBusTime(previousTime, nearestTime, nextTime)
+	bustimeId, err := bustimeService.CreateBusTime(recommendedId, previousTime, nearestTime, nextTime, endTime)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
@@ -38,7 +54,7 @@ func CreateBusTimeHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"bustime_id": bustimeId})
 }
 
-func GetBusTimeHandler(c *gin.Context) {
+func GetBusTimeByIdHandler(c *gin.Context) {
 	busTimePass := c.Query("id")
 	if busTimePass == "" {
 		busTimePass = "0"
