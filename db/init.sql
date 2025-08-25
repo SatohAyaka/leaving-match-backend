@@ -1,7 +1,7 @@
 CREATE TABLE Recommended_Data (
     recommended_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     recommended_time DATETIME,
-    member_id STRING NOT NULL,
+    member_ids JSON NOT NULL,
     status BOOLEAN,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
