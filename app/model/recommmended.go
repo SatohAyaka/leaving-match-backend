@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type IntSlice []int
+type IntSlice []int64
 
 func (s IntSlice) Value() (driver.Value, error) {
 	return json.Marshal(s)
