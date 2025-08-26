@@ -37,6 +37,22 @@ func CreateRecommendedHandler(c *gin.Context) {
 
 }
 
-func GetLatestRecommendedStatusHandler(c *gin.Context) {}
+func GetLatestRecommendedStatusHandler(c *gin.Context) {
+	recommendedService := service.RecommendedService{}
+	recommended, err := recommendedService.GetLatestRecommended()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
+		return
+	}
+	c.JSON(http.StatusOK, recommended.Status)
+}
 
-func GetLatestRecommendedMembersHandler(c *gin.Context) {}
+func GetLatestRecommendedMembersHandler(c *gin.Context) {
+	recommendedService := service.RecommendedService{}
+	recommended, err := recommendedService.GetLatestRecommended()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
+		return
+	}
+	c.JSON(http.StatusOK, recommended.MemberIds)
+}
