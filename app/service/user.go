@@ -27,6 +27,26 @@ func (UserService) CreateUser(staywatchUserId int64, slackUserId int64, userName
 	return user.BackendUserId, nil
 }
 
+func (UserService) UpdateUser(backendUserId int64, staywatchUserId int64, slackUserId int64, userName string) (model.User, error) {
+	var user model.User
+	if err := lib.DB.Where("backend_user_id = ?", backendUserId).First(&user).Error; err != nil {
+		return model.User{}, err
+	}
+	if staywatchUserId != 0 {
+		user.StayWatchUserId = staywatchUserId
+	}
+	if slackUserId != 0 {
+		user.SlackUserId = slackUserId
+	}
+	if userName != "" {
+		user.UserName = userName
+	}
+	if err := lib.DB.Save(&user).Error; err != nil {
+		return model.User{}, err
+	}
+	return user, nil
+}
+
 func (UserService) GetUser(backendUserId int64, staywatchUserId int64, slackUserId int64, userName string) ([]model.User, error) {
 	var users []model.User
 	db := lib.DB
