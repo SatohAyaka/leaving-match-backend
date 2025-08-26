@@ -8,7 +8,7 @@ import (
 
 type RecommendedService struct{}
 
-func (RecommendedService) CreateRecommended(recommendedTime time.Time, memberIds []int) (model.RecommendedResponse, error) {
+func (RecommendedService) CreateRecommended(recommendedTime time.Time, memberIds []int64) (model.RecommendedResponse, error) {
 	now := time.Now()
 	status := false
 	if diff := recommendedTime.Sub(now); diff >= 0 && diff <= 30*time.Minute {

@@ -16,18 +16,26 @@ func CreateRecommendedHandler(c *gin.Context) {
 	}
 
 	membersQuery := c.QueryArray("member")
-	memberIds := make([]int, 0, len(membersQuery))
+	backendIds := make([]int64, 0, len(membersQuery))
+
 	for _, m := range membersQuery {
-		id, err := strconv.Atoi(m)
+		staywatchId, err := strconv.ParseInt(m, 10, 64)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid member id"})
 			return
 		}
-		memberIds = append(memberIds, id)
+
+		backendId, err := StayWatchIdToBackendId(staywatchId)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to map staywatchId to backendId"})
+			return
+		}
+
+		backendIds = append(backendIds, backendId)
 	}
 
 	recommendedService := service.RecommendedService{}
-	response, err := recommendedService.CreateRecommended(recommendedTime, memberIds)
+	response, err := recommendedService.CreateRecommended(recommendedTime, backendIds)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
 		return

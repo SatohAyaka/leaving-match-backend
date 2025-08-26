@@ -31,7 +31,7 @@ func Router() {
 		versionEngine.GET("/bustime/:bustimeId", controller.GetBusTimeByIdHandler)
 		versionEngine.GET("/bustime/latest", controller.GetLatestBusTimeHandler)
 
-		versionEngine.POST("/vote/:bustimeId/:staywatchUserId", controller.CreateVoteHandler)
+		versionEngine.POST("/vote/:slackUserId", controller.CreateVoteHandler)
 		versionEngine.GET("/vote/:bustimeId", controller.GetVoteHandler)
 
 		versionEngine.POST("/result/:bustimeId", controller.CreateResultHandler)
