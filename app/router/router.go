@@ -19,6 +19,10 @@ func Router() {
 
 	versionEngine := r.Group("/api")
 	{
+		versionEngine.POST("/user", controller.CreateUserHandler)
+		versionEngine.PUT("/user/:backendUserId", controller.UpdateUserHandler)
+		versionEngine.GET("/user", controller.GetUserHandler)
+
 		versionEngine.POST("/recommended", controller.CreateRecommendedHandler)
 		versionEngine.GET("/recommended/latest/status", controller.GetLatestRecommendedStatusHandler)
 		versionEngine.GET("/recommended/latest/members", controller.GetLatestRecommendedMembersHandler)

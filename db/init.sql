@@ -3,7 +3,7 @@ CREATE TABLE Recommended_Data (
     recommended_time DATETIME,
     member_ids JSON NOT NULL,
     status BOOLEAN,
-    created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE BusTime_Data (
@@ -34,11 +34,12 @@ CREATE TABLE Result_Data (
     bus_time DATETIME,
     member INT,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustimee_id)
+    FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
 );
 
-CREATE TABLE User_Data(
+CREATE TABLE User_Data (
     backend_user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    staywatch_user_id INT NOT NULL UNIQUE,
-    slack_user_id INT NOT NULL UNIQUE,
+    staywatch_user_id INT UNIQUE,
+    slack_user_id INT UNIQUE,
+    user_name VARCHAR(255) UNIQUE
 );

@@ -35,5 +35,16 @@ POST {{baseURL}}/api/result/1
 
 ### 投票結果の取得(bustime_id=1)
 GET {{baseURL}}/api/result/1
-
+###
 GET {{baseURL}}/api/result/latest
+
+
+### User_Data
+### ユーザ情報の登録（staywatch、name、slackのいずれか）
+POST {{baseURL}}/api/user?staywatch=1&name=kaji
+
+### 不足情報の上書き(backend_user_id=1)
+PUT {{baseURL}}/api/user/1?slack=1
+
+### ユーザ情報の検索（backend, staywatch、name、slackのいずれか）
+GET {{baseURL}}/api/user?staywatch=1
