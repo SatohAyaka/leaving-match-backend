@@ -29,4 +29,9 @@ type Recommended struct {
 	CreatedDate     time.Time `gorm:"column:created_date;type:datetime;autoCreateTime"`
 }
 
+type RecommendedResponse struct {
+	RecommendedId int64
+	Status        bool
+}
+
 func (Recommended) TableName() string { return "Recommended_Data" }
