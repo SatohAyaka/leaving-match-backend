@@ -28,6 +28,10 @@ func CreateRecommendedHandler(c *gin.Context) {
 
 	recommendedService := service.RecommendedService{}
 	response, err := recommendedService.CreateRecommended(recommendedTime, memberIds)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
+		return
+	}
 
 	c.JSON(http.StatusOK, response)
 
