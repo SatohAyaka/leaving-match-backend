@@ -111,3 +111,21 @@ func GetUserHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, userData)
 }
+
+func StayWatchIdToBackendId(staywatchId int64) (int64, error) {
+	userService := service.UserService{}
+	userData, err := userService.GetUser(0, staywatchId, "", "")
+	if err != nil {
+		return 0, err
+	}
+	return userData[0].BackendUserId, nil
+}
+
+func SlackIdToBackendId(slackId string) (int64, error) {
+	userService := service.UserService{}
+	userData, err := userService.GetUser(0, 0, slackId, "")
+	if err != nil {
+		return 0, err
+	}
+	return userData[0].BackendUserId, nil
+}
