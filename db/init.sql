@@ -1,6 +1,6 @@
 CREATE TABLE Recommended_Data (
     recommended_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    recommended_time DATETIME,
+    recommended_time DATETIME NOT NULL,
     member_ids JSON NOT NULL,
     status BOOLEAN,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -31,7 +31,7 @@ CREATE TABLE Vote_Data (
 CREATE TABLE Result_Data (
     result_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bustime_id INT NOT NULL UNIQUE,
-    bus_time DATETIME,
+    bus_time DATETIME NOT NULL,
     member INT,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bustime_id) REFERENCES BusTime_Data(bustime_id)
