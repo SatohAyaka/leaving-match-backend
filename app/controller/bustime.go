@@ -79,7 +79,15 @@ func GetBusTimeByIdHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, bustimes)
 }
 
-func GetLatestBusTimeHandler(c *gin.Context) {}
+func GetLatestBusTimeHandler(c *gin.Context) {
+	bustimeService := service.BusTimeService{}
+	bustime, err := bustimeService.GetLatestBusTime()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime data"})
+		return
+	}
+	c.JSON(http.StatusOK, bustime.BusTimeId)
+}
 
 func ParseQueryToTime(query string, errorlabel string) (time.Time, error) {
 	if query == "" {

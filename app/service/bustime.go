@@ -65,3 +65,11 @@ func (BusTimeService) BusTimeToId(busTimeId int64, selectTime int64) (time.Time,
 		return time.Time{}, fmt.Errorf("invalid selectTime: %d", selectTime)
 	}
 }
+
+func (BusTimeService) GetLatestBusTime() (model.BusTime, error) {
+	var bustime model.BusTime
+	if err := lib.DB.Order("created_date DESC").First(&bustime).Error; err != nil {
+		return model.BusTime{}, err
+	}
+	return bustime, nil
+}
