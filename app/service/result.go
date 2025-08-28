@@ -36,3 +36,11 @@ func (ResultService) GetResult(busTimeId int64) ([]model.Result, error) {
 
 	return results, nil
 }
+
+func (ResultService) GetLatestResult() (model.Result, error) {
+	var result model.Result
+	if err := lib.DB.Order("created_date DESC").First(&result).Error; err != nil {
+		return model.Result{}, err
+	}
+	return result, nil
+}

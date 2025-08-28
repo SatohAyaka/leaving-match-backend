@@ -92,7 +92,15 @@ func GetResultHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, results)
 }
 
-func GetLatestResultHandler(c *gin.Context) {}
+func GetLatestResultHandler(c *gin.Context) {
+	resultService := service.ResultService{}
+	result, err := resultService.GetLatestResult()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
 
 func VotingResult(votes []model.Vote) (previousVote int64, nearestVote int64, nextVote int64) {
 	previous := 0
