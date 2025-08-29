@@ -2,6 +2,7 @@ package controller
 
 import (
 	"SatohAyaka/leaving-match-backend/service"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -118,6 +119,9 @@ func StayWatchIdToBackendId(staywatchId int64) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
+	if len(userData) == 0 {
+		return 0, fmt.Errorf("no backendId found for staywatchId=%d", staywatchId)
+	}
 	return userData[0].BackendUserId, nil
 }
 
@@ -126,6 +130,9 @@ func SlackIdToBackendId(slackId string) (int64, error) {
 	userData, err := userService.GetUser(0, 0, slackId, "")
 	if err != nil {
 		return 0, err
+	}
+	if len(userData) == 0 {
+		return 0, fmt.Errorf("no backendId found for slackId=%s", slackId)
 	}
 	return userData[0].BackendUserId, nil
 }
