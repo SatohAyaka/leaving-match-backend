@@ -83,16 +83,24 @@ func GetResultHandler(c *gin.Context) {
 		return
 	}
 	resultService := service.ResultService{}
-	results, err := resultService.GetResult(busTimeId)
+	result, err := resultService.GetResult(busTimeId)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get results"})
 		return
 	}
 
-	c.JSON(http.StatusOK, results)
+	c.JSON(http.StatusOK, result)
 }
 
-func GetLatestResultHandler(c *gin.Context) {}
+func GetLatestResultHandler(c *gin.Context) {
+	resultService := service.ResultService{}
+	result, err := resultService.GetLatestResult()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get recommended data"})
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
 
 func VotingResult(votes []model.Vote) (previousVote int64, nearestVote int64, nextVote int64) {
 	previous := 0

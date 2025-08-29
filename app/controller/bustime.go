@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"SatohAyaka/leaving-match-backend/model"
 	"SatohAyaka/leaving-match-backend/service"
 	"fmt"
 	"net/http"
@@ -48,6 +49,24 @@ func CreateBusTimeHandler(c *gin.Context) {
 	}
 
 	bustimeService := service.BusTimeService{}
+	lastBusTime, err := bustimeService.GetLatestBusTime()
+	if lastBusTime != (model.BusTime{}) {
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid last bustime ID"})
+			return
+		}
+		resultService := service.ResultService{}
+		lastResult, err := resultService.GetResult(lastBusTime.BusTimeId)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid result ID"})
+			return
+		}
+		if lastResult == (model.Result{}) {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "previous bustime does not have result"})
+			return
+		}
+	}
+
 	bustimeId, err := bustimeService.CreateBusTime(recommendedId, previousTime, nearestTime, nextTime, endTime)
 
 	if err != nil {
@@ -59,12 +78,12 @@ func CreateBusTimeHandler(c *gin.Context) {
 }
 
 func GetBusTimeByIdHandler(c *gin.Context) {
-	busTimePass := c.Query("id")
-	if busTimePass == "" {
-		busTimePass = "0"
+	busTimeParam := c.Param("bustimeId")
+	if busTimeParam == "" {
+		busTimeParam = "0"
 	}
 
-	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
+	busTimeId, err := strconv.ParseInt(busTimeParam, 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
 		return
@@ -79,7 +98,15 @@ func GetBusTimeByIdHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, bustimes)
 }
 
-func GetLatestBusTimeHandler(c *gin.Context) {}
+func GetLatestBusTimeHandler(c *gin.Context) {
+	bustimeService := service.BusTimeService{}
+	bustime, err := bustimeService.GetLatestBusTime()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime data"})
+		return
+	}
+	c.JSON(http.StatusOK, bustime.BusTimeId)
+}
 
 func ParseQueryToTime(query string, errorlabel string) (time.Time, error) {
 	if query == "" {

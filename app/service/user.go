@@ -11,7 +11,7 @@ import (
 
 type UserService struct{}
 
-func (UserService) CreateUser(staywatchUserId int64, slackUserId string, userName string) (int64, error) {
+func (UserService) CreateUser(staywatchUserId *int64, slackUserId *string, userName *string) (int64, error) {
 	user := model.User{
 		StayWatchUserId: staywatchUserId,
 		SlackUserId:     slackUserId,
@@ -27,18 +27,18 @@ func (UserService) CreateUser(staywatchUserId int64, slackUserId string, userNam
 	return user.BackendUserId, nil
 }
 
-func (UserService) UpdateUser(backendUserId int64, staywatchUserId int64, slackUserId string, userName string) (model.User, error) {
+func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, userName *string) (model.User, error) {
 	var user model.User
 	if err := lib.DB.Where("backend_user_id = ?", backendUserId).First(&user).Error; err != nil {
 		return model.User{}, err
 	}
-	if staywatchUserId != 0 {
+	if staywatchUserId != nil {
 		user.StayWatchUserId = staywatchUserId
 	}
-	if slackUserId != "" {
+	if slackUserId != nil {
 		user.SlackUserId = slackUserId
 	}
-	if userName != "" {
+	if userName != nil {
 		user.UserName = userName
 	}
 	if err := lib.DB.Save(&user).Error; err != nil {
@@ -47,7 +47,7 @@ func (UserService) UpdateUser(backendUserId int64, staywatchUserId int64, slackU
 	return user, nil
 }
 
-func (UserService) GetUser(backendUserId int64, staywatchUserId int64, slackUserId string, userName string) ([]model.User, error) {
+func (UserService) GetUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, userName *string) ([]model.User, error) {
 	var users []model.User
 	db := lib.DB
 
@@ -55,13 +55,13 @@ func (UserService) GetUser(backendUserId int64, staywatchUserId int64, slackUser
 	if backendUserId != 0 {
 		db = db.Where("backend_user_id = ?", backendUserId)
 	}
-	if staywatchUserId != 0 {
+	if staywatchUserId != nil {
 		db = db.Where("staywatch_user_id = ?", staywatchUserId)
 	}
-	if slackUserId != "" {
+	if slackUserId != nil {
 		db = db.Where("slack_user_id = ?", slackUserId)
 	}
-	if userName != "" {
+	if userName != nil {
 		db = db.Where("user_name = ?", userName)
 	}
 

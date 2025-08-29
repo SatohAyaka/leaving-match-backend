@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"SatohAyaka/leaving-match-backend/model"
 	"SatohAyaka/leaving-match-backend/service"
 	"net/http"
 	"strconv"
@@ -10,23 +11,33 @@ import (
 )
 
 func CreateVoteHandler(c *gin.Context) {
-	busTimePass := c.Param("bustimeId")
-	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
+	busTimeService := service.BusTimeService{}
+	lastBusTime, err := busTimeService.GetLatestBusTime()
+	busTimeId := lastBusTime.BusTimeId
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
 		return
 	}
 
-	userIdPass := c.Param("userId")
-	userId, err := strconv.ParseInt(userIdPass, 10, 64)
+	resultService := service.ResultService{}
+	lastResult, err := resultService.GetResult(busTimeId)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid result ID"})
+		return
+	}
+	if lastResult != (model.Result{}) {
+		c.JSON(http.StatusForbidden, gin.H{"message": "voting closed for this bustime"})
+		return
+	}
+
+	slackIdPass := c.Param("slackUserId")
+	backendId, err := SlackIdToBackendId(slackIdPass)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
 		return
 	}
 
-	previous := false
-	nearest := false
-	next := false
+	previous, nearest, next := false, false, false
 	busTimeQuery := c.Query("vote")
 	if busTimeQuery == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "vote query parameter is required"})
@@ -44,7 +55,7 @@ func CreateVoteHandler(c *gin.Context) {
 	}
 
 	voteService := service.VoteService{}
-	if err := voteService.CreateVote(busTimeId, userId, previous, nearest, next); err != nil {
+	if err := voteService.CreateVote(busTimeId, backendId, previous, nearest, next); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create vote data"})
 		return
 	}
