@@ -83,13 +83,13 @@ func GetResultHandler(c *gin.Context) {
 		return
 	}
 	resultService := service.ResultService{}
-	results, err := resultService.GetResult(busTimeId)
+	result, err := resultService.GetResult(busTimeId)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get results"})
 		return
 	}
 
-	c.JSON(http.StatusOK, results)
+	c.JSON(http.StatusOK, result)
 }
 
 func GetLatestResultHandler(c *gin.Context) {

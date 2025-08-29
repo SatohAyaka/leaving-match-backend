@@ -22,8 +22,8 @@ GET {{baseURL}}/api/bustime/latest
 
 
 ### Vote_Data
-### 投票情報の登録(bustime_id=1,staywatch_user_id=2)
-POST {{baseURL}}/api/vote/1/2?vote=previous,nearest
+### 投票情報の登録(staywatch_user_id=2)
+POST {{baseURL}}/api/vote/1?vote=previous,nearest
 
 ### 投票結果の取得
 GET {{baseURL}}/api/vote/1

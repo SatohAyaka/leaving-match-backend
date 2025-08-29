@@ -21,20 +21,20 @@ func (ResultService) CreateResult(busTimeId int64, busTime time.Time, member int
 	return results.ResultId, nil
 }
 
-func (ResultService) GetResult(busTimeId int64) ([]model.Result, error) {
-	results := []model.Result{}
+func (ResultService) GetResult(busTimeId int64) (model.Result, error) {
+	var result model.Result
 
 	query := lib.DB.Model(&model.Result{})
 	if busTimeId > 0 {
 		query = query.Where("bustime_id = ?", busTimeId)
 	}
 
-	if err := query.Find(&results).Error; err != nil {
+	if err := query.Find(&result).Error; err != nil {
 		log.Printf("DBクエリエラー: %v", err)
-		return nil, err
+		return model.Result{}, err
 	}
 
-	return results, nil
+	return result, nil
 }
 
 func (ResultService) GetLatestResult() (model.Result, error) {
