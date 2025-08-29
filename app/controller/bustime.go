@@ -59,12 +59,12 @@ func CreateBusTimeHandler(c *gin.Context) {
 }
 
 func GetBusTimeByIdHandler(c *gin.Context) {
-	busTimePass := c.Query("id")
-	if busTimePass == "" {
-		busTimePass = "0"
+	busTimeParam := c.Param("bustimeId")
+	if busTimeParam == "" {
+		busTimeParam = "0"
 	}
 
-	busTimeId, err := strconv.ParseInt(busTimePass, 10, 64)
+	busTimeId, err := strconv.ParseInt(busTimeParam, 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid bustime ID"})
 		return
