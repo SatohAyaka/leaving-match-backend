@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"SatohAyaka/leaving-match-backend/model"
 	"SatohAyaka/leaving-match-backend/service"
 	"fmt"
 	"net/http"
@@ -48,6 +49,24 @@ func CreateBusTimeHandler(c *gin.Context) {
 	}
 
 	bustimeService := service.BusTimeService{}
+	lastBusTime, err := bustimeService.GetLatestBusTime()
+	if lastBusTime != (model.BusTime{}) {
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid last bustime ID"})
+			return
+		}
+		resultService := service.ResultService{}
+		lastResult, err := resultService.GetResult(lastBusTime.BusTimeId)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid result ID"})
+			return
+		}
+		if lastResult == (model.Result{}) {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "previous bustime does not have result"})
+			return
+		}
+	}
+
 	bustimeId, err := bustimeService.CreateBusTime(recommendedId, previousTime, nearestTime, nextTime, endTime)
 
 	if err != nil {
