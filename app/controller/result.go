@@ -32,7 +32,18 @@ func CreateResultHandler(c *gin.Context) {
 
 	var resultId int64
 
-	if previous >= nearest && previous >= next {
+	if previous == 0 && nearest == 0 && next == 0 {
+		busTime, err := bustimeService.BusTimeToId(busTimeId, 2)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
+			return
+		}
+		resultId, err = resultService.CreateResult(busTimeId, busTime, nearest)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
+			return
+		}
+	} else if previous >= nearest && previous >= next {
 		busTime, err := bustimeService.BusTimeToId(busTimeId, 1)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
