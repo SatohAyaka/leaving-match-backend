@@ -40,7 +40,7 @@ func CreateBusTimeHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	intEndTime := intPreviousTime - 20
+	intEndTime := intPreviousTime - 15
 	strEndTime := strconv.FormatInt(intEndTime, 10)
 	endTime, err := ParseQueryToTime(strEndTime, "endTime")
 	if err != nil {
