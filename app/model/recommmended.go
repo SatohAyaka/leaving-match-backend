@@ -4,7 +4,6 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 type IntSlice []int64
@@ -22,11 +21,11 @@ func (s *IntSlice) Scan(value interface{}) error {
 }
 
 type Recommended struct {
-	RecommendedId   int64     `gorm:"column:recommended_id;primaryKey;autoIncrement"`
-	RecommendedTime time.Time `gorm:"column:recommended_time;not null"`
-	MemberIds       IntSlice  `gorm:"column:member_ids;type:json;not null"`
-	Status          bool      `gorm:"column:status"`
-	CreatedDate     time.Time `gorm:"column:created_date;type:datetime;autoCreateTime"`
+	RecommendedId   int64    `gorm:"column:recommended_id;primaryKey;autoIncrement"`
+	RecommendedTime JSONTime `gorm:"column:recommended_time;not null"`
+	MemberIds       IntSlice `gorm:"column:member_ids;type:json;not null"`
+	Status          bool     `gorm:"column:status"`
+	CreatedDate     JSONTime `gorm:"column:created_date;type:datetime;autoCreateTime"`
 }
 
 type RecommendedResponse struct {
