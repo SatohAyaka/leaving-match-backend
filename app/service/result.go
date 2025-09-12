@@ -12,7 +12,7 @@ type ResultService struct{}
 func (ResultService) CreateResult(busTimeId int64, busTime time.Time, member int64) (int64, error) {
 	results := model.Result{
 		BusTimeId: busTimeId,
-		BusTime:   model.JSONTime{Time: busTime},
+		BusTime:   busTime,
 		Member:    member,
 	}
 	if err := lib.DB.Create(&results).Error; err != nil {

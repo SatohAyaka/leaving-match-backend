@@ -13,10 +13,10 @@ type BusTimeService struct{}
 func (BusTimeService) CreateBusTime(recommendedId int64, previous time.Time, nearest time.Time, next time.Time, endtime time.Time) (int64, error) {
 	bustime := model.BusTime{
 		RecommendedId: recommendedId,
-		PreviousTime:  model.JSONTime{Time: previous},
-		NearestTime:   model.JSONTime{Time: nearest},
-		NextTime:      model.JSONTime{Time: next},
-		EndTime:       model.JSONTime{Time: endtime},
+		PreviousTime:  previous,
+		NearestTime:   nearest,
+		NextTime:      next,
+		EndTime:       endtime,
 	}
 
 	if err := lib.DB.Create(&bustime).Error; err != nil {
@@ -56,11 +56,11 @@ func (BusTimeService) BusTimeToId(busTimeId int64, selectTime int64) (time.Time,
 
 	switch selectTime {
 	case 1:
-		return bustimes.PreviousTime.Time, nil
+		return bustimes.PreviousTime, nil
 	case 2:
-		return bustimes.NearestTime.Time, nil
+		return bustimes.NearestTime, nil
 	case 3:
-		return bustimes.NextTime.Time, nil
+		return bustimes.NextTime, nil
 	default:
 		return time.Time{}, fmt.Errorf("invalid selectTime: %d", selectTime)
 	}
