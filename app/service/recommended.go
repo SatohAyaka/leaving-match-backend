@@ -15,7 +15,7 @@ func (RecommendedService) CreateRecommended(recommendedTime time.Time, memberIds
 		status = true
 	}
 	recommended := model.Recommended{
-		RecommendedTime: model.JSONTime{Time: recommendedTime},
+		RecommendedTime: recommendedTime,
 		MemberIds:       memberIds,
 		Status:          status,
 	}
