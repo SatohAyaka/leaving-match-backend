@@ -13,16 +13,16 @@ GET {{baseURL}}/api/recommended/latest/members
 
 ### BusTime_Data
 ### 推奨バスの時刻の登録
-POST {{baseURL}}/api/bustime/1?previous=1170&nearest=1200&next=1230
+POST {{baseURL}}/api/bustime/1?previous=1160&nearest=1170&next=1180
 
 ### 一覧orIDに対応するカラムの取得
-GET {{baseURL}}/api/bustime/1
+GET {{baseURL}}/api/bustime/2
 ### 最新のカラム取得
 GET {{baseURL}}/api/bustime/latest
 
 
 ### Vote_Data
-### 投票情報の登録(staywatch_user_id=2)
+### 投票情報の登録(slack_user_id=2)
 POST {{baseURL}}/api/vote/1?vote=previous,nearest
 
 ### 投票結果の取得
