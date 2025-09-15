@@ -119,7 +119,8 @@ func ParseQueryToTime(query string, errorlabel string) (time.Time, error) {
 	hour := minutes / 60
 	minute := minutes % 60
 
-	now := time.Now()
+	loc, _ := time.LoadLocation("Asia/Tokyo")
+	now := time.Now().In(loc)
 
-	return time.Date(now.Year(), now.Month(), now.Day(), hour, minute, 0, 0, now.Location()), nil
+	return time.Date(now.Year(), now.Month(), now.Day(), hour, minute, 0, 0, loc), nil
 }
