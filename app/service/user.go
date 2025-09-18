@@ -27,7 +27,7 @@ func (UserService) CreateUser(staywatchUserId *int64, slackUserId *string, userN
 	return user.BackendUserId, nil
 }
 
-func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, userName *string) (model.User, error) {
+func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, channelId *string, userName *string) (model.User, error) {
 	var user model.User
 	if err := lib.DB.Where("backend_user_id = ?", backendUserId).First(&user).Error; err != nil {
 		return model.User{}, err
@@ -38,6 +38,9 @@ func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slack
 	if slackUserId != nil {
 		user.SlackUserId = slackUserId
 	}
+	if channelId != nil {
+		user.ChannelId = channelId
+	}
 	if userName != nil {
 		user.UserName = userName
 	}
@@ -47,7 +50,7 @@ func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slack
 	return user, nil
 }
 
-func (UserService) GetUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, userName *string) ([]model.User, error) {
+func (UserService) GetUser(backendUserId int64, staywatchUserId *int64, slackUserId *string, channelId *string, userName *string) ([]model.User, error) {
 	var users []model.User
 	db := lib.DB
 
@@ -60,6 +63,9 @@ func (UserService) GetUser(backendUserId int64, staywatchUserId *int64, slackUse
 	}
 	if slackUserId != nil {
 		db = db.Where("slack_user_id = ?", slackUserId)
+	}
+	if channelId != nil {
+		db = db.Where("channel_id = ?", channelId)
 	}
 	if userName != nil {
 		db = db.Where("user_name = ?", userName)

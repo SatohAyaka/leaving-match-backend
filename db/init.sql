@@ -41,5 +41,6 @@ CREATE TABLE User_Data (
     backend_user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     staywatch_user_id INT UNIQUE NULL,
     slack_user_id VARCHAR(255) UNIQUE NULL,
+    channel_id VARCHAR(255) UNIQUE NULL,
     user_name VARCHAR(255) UNIQUE NULL
 );

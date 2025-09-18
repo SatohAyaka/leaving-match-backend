@@ -82,13 +82,19 @@ func UpdateUserHandler(c *gin.Context) {
 		userNamePtr = &userNameQuery
 	}
 
-	if staywatchUserQuery == "" && slackUserQuery == "" && userNameQuery == "" {
+	slackChannelQuery := c.Query("channel_id")
+	var slackChannelPtr *string
+	if slackChannelQuery != "" {
+		slackChannelPtr = &slackChannelQuery
+	}
+
+	if staywatchUserQuery == "" && slackUserQuery == "" && userNameQuery == "" && slackChannelQuery == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "no query"})
 		return
 	}
 
 	userService := service.UserService{}
-	userData, err := userService.UpdateUser(backendUserId, staywatchIdPtr, slackIdPtr, userNamePtr)
+	userData, err := userService.UpdateUser(backendUserId, staywatchIdPtr, slackIdPtr, slackChannelPtr, userNamePtr)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to update user data"})
@@ -127,18 +133,24 @@ func GetUserHandler(c *gin.Context) {
 		slackIdPtr = &slackUserQuery
 	}
 
+	slackChannelQuery := c.Query("channel_id")
+	var slackChannelPtr *string
+	if slackChannelQuery != "" {
+		slackChannelPtr = &slackChannelQuery
+	}
+
 	userNameQuery := c.Query("name")
 	var userNamePtr *string
 	if userNameQuery != "" {
 		userNamePtr = &userNameQuery
 	}
-	if staywatchUserQuery == "" && slackUserQuery == "" && userNameQuery == "" {
+	if staywatchUserQuery == "" && slackUserQuery == "" && slackChannelQuery == "" && userNameQuery == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "no query"})
 		return
 	}
 
 	userService := service.UserService{}
-	userData, err := userService.GetUser(backendUserId, staywatchIdPtr, slackIdPtr, userNamePtr)
+	userData, err := userService.GetUser(backendUserId, staywatchIdPtr, slackIdPtr, slackChannelPtr, userNamePtr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get user data"})
 		return
@@ -150,7 +162,7 @@ func StayWatchIdToBackendId(staywatchId int64) (int64, error) {
 	var staywatchIdPtr = &staywatchId
 
 	userService := service.UserService{}
-	userData, err := userService.GetUser(0, staywatchIdPtr, nil, nil)
+	userData, err := userService.GetUser(0, staywatchIdPtr, nil, nil, nil)
 	if err != nil {
 		return 0, err
 	}
@@ -163,12 +175,25 @@ func StayWatchIdToBackendId(staywatchId int64) (int64, error) {
 func SlackIdToBackendId(slackId string) (int64, error) {
 	var slackIdPtr = &slackId
 	userService := service.UserService{}
-	userData, err := userService.GetUser(0, nil, slackIdPtr, nil)
+	userData, err := userService.GetUser(0, nil, slackIdPtr, nil, nil)
 	if err != nil {
 		return 0, err
 	}
 	if len(userData) == 0 {
 		return 0, fmt.Errorf("no backendId found for slackId=%s", slackId)
+	}
+	return userData[0].BackendUserId, nil
+}
+
+func UserNameToBackendId(userName string) (int64, error) {
+	var userNamePtr = &userName
+	userService := service.UserService{}
+	userData, err := userService.GetUser(0, nil, nil, nil, userNamePtr)
+	if err != nil {
+		return 0, err
+	}
+	if len(userData) == 0 {
+		return 0, fmt.Errorf("no backendId found for slackId=%s", userName)
 	}
 	return userData[0].BackendUserId, nil
 }
