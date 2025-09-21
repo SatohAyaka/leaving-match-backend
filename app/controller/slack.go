@@ -2,6 +2,7 @@ package controller
 
 import (
 	"SatohAyaka/leaving-match-backend/lib"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -15,14 +16,14 @@ func SendDMHandler(c *gin.Context) {
 	for _, m := range membersQuery {
 		staywatchId, err := strconv.ParseInt(m, 10, 64)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid member id"})
-			return
+			log.Println("invalid member id:", m, err)
+			continue
 		}
 
 		channelId, err := StayWatchIdToChannelId(staywatchId)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to map staywatchId to backendId"})
-			return
+			log.Println("failed to map staywatchId:", staywatchId, "err:", err)
+			continue
 		}
 
 		channels = append(channels, channelId)
