@@ -37,6 +37,8 @@ func Router() {
 		versionEngine.POST("/result/:bustimeId", controller.CreateResultHandler)
 		versionEngine.GET("/result/:bustimeId", controller.GetResultHandler)
 		versionEngine.GET("/result/latest", controller.GetLatestResultHandler)
+
+		versionEngine.POST("/slack/notify", controller.SendDMHandler)
 	}
 
 	r.Run(":8085")
