@@ -197,3 +197,17 @@ func UserNameToBackendId(userName string) (int64, error) {
 	}
 	return userData[0].BackendUserId, nil
 }
+
+func StayWatchIdToChannelId(staywatchId int64) (string, error) {
+	var staywatchIdPtr = &staywatchId
+
+	userService := service.UserService{}
+	userData, err := userService.GetUser(0, staywatchIdPtr, nil, nil, nil)
+	if err != nil {
+		return "", err
+	}
+	if len(userData) == 0 {
+		return "", fmt.Errorf("no backendId found for staywatchId=%d", staywatchId)
+	}
+	return *userData[0].ChannelId, nil
+}
