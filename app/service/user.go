@@ -3,7 +3,13 @@ package service
 import (
 	"SatohAyaka/leaving-match-backend/lib"
 	"SatohAyaka/leaving-match-backend/model"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
 	"strings"
 
 	"gorm.io/gorm"
@@ -76,4 +82,41 @@ func (UserService) GetUser(backendUserId int64, staywatchUserId *int64, slackUse
 	}
 
 	return users, nil
+}
+
+func (UserService) GetAllUsers() ([]model.StayWatchUser, error) {
+	apiURL := os.Getenv("StayWatch_API")
+	apiKey := os.Getenv("API_KEY")
+
+	if apiURL == "" || apiKey == "" {
+		return nil, fmt.Errorf("STAY_WATCH_API または API_KEY が設定されていません")
+	}
+
+	req, err := http.NewRequest("GET", apiURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("リクエスト作成失敗: %w", err)
+	}
+
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("外部API呼び出し失敗: %w", err)
+	}
+	defer response.Body.Close()
+	log.Println("ユーザ登録API呼び出し成功")
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("レスポンス読み込み失敗: %w", err)
+	}
+
+	var staywatchResponse []model.StayWatchUser
+	if err := json.Unmarshal(body, &staywatchResponse); err != nil {
+		return nil, fmt.Errorf("JSONパース失敗: %w", err)
+	}
+
+	return staywatchResponse, nil
 }
