@@ -1,6 +1,7 @@
 package main
 
 import (
+	"SatohAyaka/leaving-match-backend/controller"
 	"SatohAyaka/leaving-match-backend/lib"
 	"SatohAyaka/leaving-match-backend/router"
 	"log"
@@ -12,6 +13,12 @@ import (
 func main() {
 	err := godotenv.Load(".env")
 	lib.InitDB()
+	if err := controller.RegisterUserWithRetry(); err != nil {
+		log.Printf("初回ユーザ登録でエラー: %v", err)
+	} else {
+		log.Println("初回ユーザ登録処理完了")
+	}
+
 	router.Router()
 
 	if err != nil {
