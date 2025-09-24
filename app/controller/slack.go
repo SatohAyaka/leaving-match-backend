@@ -76,7 +76,11 @@ func SlackEventHandler(c *gin.Context) {
 
 	// SlackのURL検証 (最初だけ飛んでくる)
 	if t, ok := payload["type"].(string); ok && t == "url_verification" {
-		c.JSON(http.StatusOK, gin.H{"challenge": payload["challenge"]})
+		if challenge, exists := payload["challenge"].(string); exists {
+			c.JSON(http.StatusOK, gin.H{"challenge": challenge})
+			return
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": "challenge not found"})
 		return
 	}
 
