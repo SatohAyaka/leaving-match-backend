@@ -8,4 +8,13 @@ type User struct {
 	UserName        *string `gorm:"column:user_name;unique"`
 }
 
+type StayWatchUser struct {
+	StayWatchUserId int64  `json:"id"`
+	Name            string `json:"name"`
+	Tags            []struct {
+		TagID   int    `json:"id"`
+		TagName string `json:"name"`
+	} `json:"tags"`
+}
+
 func (User) TableName() string { return "User_Data" }
