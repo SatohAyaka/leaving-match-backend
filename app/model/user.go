@@ -17,4 +17,9 @@ type StayWatchUser struct {
 	} `json:"tags"`
 }
 
+type SlackUser struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 func (User) TableName() string { return "User_Data" }
