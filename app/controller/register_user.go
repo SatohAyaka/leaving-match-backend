@@ -41,3 +41,43 @@ func RegisterUserOnce() error {
 	})
 	return registerErr
 }
+
+func ConnectUserData() error {
+	users, err := service.GetAllSlackUsers()
+	if err != nil {
+		return err
+	}
+
+	userService := service.UserService{}
+
+	for _, u := range users {
+		slackID := u.ID
+		userName := u.Name
+
+		// DB から backendUserId を取得
+		dbUsers, err := userService.GetUser(0, nil, nil, nil, &userName)
+		if err != nil || len(dbUsers) == 0 {
+			log.Printf("DBにユーザが存在しない: %s", userName)
+			continue
+		}
+		backendUserID := dbUsers[0].BackendUserId
+
+		// DM チャンネルを開設（通知はされない）
+		channelID, err := service.OpenDM(slackID)
+		if err != nil {
+			log.Printf("DM開設失敗: %s, err: %v", userName, err)
+			continue
+		}
+
+		// DB 更新
+		_, err = userService.UpdateUser(backendUserID, nil, &slackID, &channelID, nil)
+		if err != nil {
+			log.Printf("ユーザ更新失敗: %s, err: %v", userName, err)
+			continue
+		}
+
+		log.Printf("SlackID と ChannelID を紐づけ: %s", userName)
+	}
+
+	return nil
+}
