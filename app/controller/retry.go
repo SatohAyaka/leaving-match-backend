@@ -8,7 +8,7 @@ import (
 
 // 最大リトライ回数
 const maxRetry = 3
-const retryDelay = 5 * time.Second
+const retryDelay = 30 * time.Second
 
 func RegisterUserWithRetry() error {
 	var lastErr error
