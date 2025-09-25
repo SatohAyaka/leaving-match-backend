@@ -57,7 +57,7 @@ func SendDMHandler(c *gin.Context) {
 	}
 
 	for _, channel := range channels {
-		lib.SendDM(channel, "乗れそうなバスを選択してください")
+		lib.SendDM(channel, busMessage)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
