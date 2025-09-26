@@ -24,9 +24,10 @@ func RegisterUserOnce() error {
 		for _, v := range response {
 			staywatchUserId := v.StayWatchUserId
 			userName := v.Name
+			channelId := ""
 			slackUserId := ""
 
-			_, err := userService.CreateUser(&staywatchUserId, &slackUserId, &userName)
+			_, err := userService.CreateUser(&staywatchUserId, &slackUserId, &channelId, &userName)
 			if err != nil {
 				if err.Error() == "user already exists" {
 					continue

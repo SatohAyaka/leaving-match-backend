@@ -36,13 +36,19 @@ func CreateUserHandler(c *gin.Context) {
 		userNamePtr = &userNameQuery
 	}
 
+	channelQuery := c.Query("channel")
+	var channelPtr *string
+	if channelQuery != "" {
+		channelPtr = &channelQuery
+	}
+
 	if staywatchUserQuery == "" && slackUserQuery == "" && userNameQuery == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "no query"})
 		return
 	}
 
 	userService := service.UserService{}
-	backendUserId, err := userService.CreateUser(staywatchIdPtr, slackIdPtr, userNamePtr)
+	backendUserId, err := userService.CreateUser(staywatchIdPtr, slackIdPtr, channelPtr, userNamePtr)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get backendUserId"})
 		return

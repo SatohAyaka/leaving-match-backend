@@ -17,10 +17,21 @@ import (
 
 type UserService struct{}
 
-func (UserService) CreateUser(staywatchUserId *int64, slackUserId *string, userName *string) (int64, error) {
+func (UserService) CreateUser(staywatchUserId *int64, slackUserId *string, channelId *string, userName *string) (int64, error) {
+	if slackUserId != nil && *slackUserId == "" {
+		slackUserId = nil
+	}
+	if channelId != nil && *channelId == "" {
+		channelId = nil
+	}
+	if userName != nil && *userName == "" {
+		userName = nil
+	}
+
 	user := model.User{
 		StayWatchUserId: staywatchUserId,
 		SlackUserId:     slackUserId,
+		ChannelId:       channelId,
 		UserName:        userName,
 	}
 
@@ -97,7 +108,7 @@ func (UserService) GetAllUsers() ([]model.StayWatchUser, error) {
 		return nil, fmt.Errorf("リクエスト作成失敗: %w", err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("X-API-Key", apiKey)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
@@ -112,6 +123,8 @@ func (UserService) GetAllUsers() ([]model.StayWatchUser, error) {
 	if err != nil {
 		return nil, fmt.Errorf("レスポンス読み込み失敗: %w", err)
 	}
+	log.Printf("body length=%d, raw=%q\n", len(body), string(body))
+	log.Printf("status=%d", response.StatusCode)
 
 	var staywatchResponse []model.StayWatchUser
 	if err := json.Unmarshal(body, &staywatchResponse); err != nil {
