@@ -49,3 +49,6 @@ PUT {{baseURL}}/api/user/1?slack=1
 
 ### ユーザ情報の検索（backend, staywatch、name、slackのいずれか）
 GET {{baseURL}}/api/user?staywatch=1
+
+###
+POST {{baseURL}}/api/slack/notify?member=90&bustime=1160&bustime=1170&bustime=1180
