@@ -3,8 +3,8 @@ package model
 import "time"
 
 type BusTime struct {
-	BusTimeId     int64     `gorm:"column:bustime_id;primaryKey;autoIncrement"`
-	RecommendedId int64     `gorm:"column:recommended_id;not null;uniqueIndex"`
+	BusTimeId     int64     `gorm:"column:bustime_id;not null;primaryKey;autoIncrement;type:BIGINT"`
+	RecommendedId int64     `gorm:"column:recommended_id;not null;type:BIGINT"`
 	PreviousTime  time.Time `gorm:"column:previous_time;"`
 	NearestTime   time.Time `gorm:"column:nearest_time"`
 	NextTime      time.Time `gorm:"column:next_time"`

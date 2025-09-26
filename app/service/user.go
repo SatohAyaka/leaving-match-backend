@@ -52,13 +52,13 @@ func (UserService) UpdateUser(backendUserId int64, staywatchUserId *int64, slack
 	if staywatchUserId != nil {
 		user.StayWatchUserId = staywatchUserId
 	}
-	if slackUserId != nil {
+	if slackUserId != nil && *slackUserId != "" {
 		user.SlackUserId = slackUserId
 	}
-	if channelId != nil {
+	if channelId != nil && *channelId != "" {
 		user.ChannelId = channelId
 	}
-	if userName != nil {
+	if userName != nil && *userName != "" {
 		user.UserName = userName
 	}
 	if err := lib.DB.Save(&user).Error; err != nil {
@@ -123,8 +123,6 @@ func (UserService) GetAllUsers() ([]model.StayWatchUser, error) {
 	if err != nil {
 		return nil, fmt.Errorf("レスポンス読み込み失敗: %w", err)
 	}
-	log.Printf("body length=%d, raw=%q\n", len(body), string(body))
-	log.Printf("status=%d", response.StatusCode)
 
 	var staywatchResponse []model.StayWatchUser
 	if err := json.Unmarshal(body, &staywatchResponse); err != nil {

@@ -22,7 +22,7 @@ func (s *IntSlice) Scan(value interface{}) error {
 }
 
 type Recommended struct {
-	RecommendedId   int64     `gorm:"column:recommended_id;primaryKey;autoIncrement"`
+	RecommendedId   int64     `gorm:"column:recommended_id;primaryKey;autoIncrement;type:BIGINT"`
 	RecommendedTime time.Time `gorm:"column:recommended_time;not null"`
 	MemberIds       IntSlice  `gorm:"column:member_ids;type:json;not null"`
 	Status          bool      `gorm:"column:status"`
