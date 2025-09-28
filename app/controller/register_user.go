@@ -44,7 +44,9 @@ func RegisterUserOnce() error {
 }
 
 func ConnectUserData() error {
+	log.Println("ConnectUserData 開始")
 	users, err := service.GetAllSlackUsers()
+	log.Printf("取得slackユーザ数: %d, err: %v", len(users), err)
 	if err != nil {
 		return err
 	}
@@ -76,7 +78,6 @@ func ConnectUserData() error {
 			log.Printf("ユーザ更新失敗: %s, err: %v", userName, err)
 			continue
 		}
-
 		log.Printf("SlackID と ChannelID を紐づけ: %s", userName)
 	}
 
