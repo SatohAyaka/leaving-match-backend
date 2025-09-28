@@ -26,12 +26,12 @@ func SendDM(channelID, text string) {
 		log.Println("Slack送信エラー:", err)
 		return
 	}
+	defer resp.Body.Close()
+
 	var respData map[string]interface{}
 	json.NewDecoder(resp.Body).Decode(&respData)
 
 	if ok, exists := respData["ok"].(bool); !exists || !ok {
 		log.Printf("Slack API error:%+v\n", respData)
 	}
-
-	defer resp.Body.Close()
 }
