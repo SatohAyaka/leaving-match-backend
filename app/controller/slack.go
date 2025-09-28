@@ -48,7 +48,8 @@ func SendDMHandler(c *gin.Context) {
 			log.Println("failed to parse bustime:", minbustime, "err:", err)
 			continue
 		}
-		busMessage += fmt.Sprintf("%d. %s\n", i+1, bustime)
+		timeStr := bustime.Format("15:04")
+		busMessage += fmt.Sprintf("%d. %s\n", i+1, timeStr)
 	}
 
 	channels := make([]string, 0, len(membersQuery))
