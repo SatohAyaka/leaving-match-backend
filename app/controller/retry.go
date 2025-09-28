@@ -23,7 +23,7 @@ func RegisterUserWithRetry() error {
 		}
 		updateErr = ConnectUserData()
 		if updateErr != nil {
-			log.Printf("初回ユーザ接続失敗: %v リトライ %d/%d", lastErr, i+1, maxRetry)
+			log.Printf("ユーザ接続失敗: %v リトライ %d/%d", lastErr, i+1, maxRetry)
 			time.Sleep(retryDelay)
 			continue
 		}
