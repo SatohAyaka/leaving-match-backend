@@ -24,9 +24,10 @@ func RegisterUserOnce() error {
 		for _, v := range response {
 			staywatchUserId := v.StayWatchUserId
 			userName := v.Name
+			channelId := ""
 			slackUserId := ""
 
-			_, err := userService.CreateUser(&staywatchUserId, &slackUserId, &userName)
+			_, err := userService.CreateUser(&staywatchUserId, &slackUserId, &channelId, &userName)
 			if err != nil {
 				if err.Error() == "user already exists" {
 					continue
@@ -43,7 +44,9 @@ func RegisterUserOnce() error {
 }
 
 func ConnectUserData() error {
+	log.Println("ConnectUserData 開始")
 	users, err := service.GetAllSlackUsers()
+	log.Printf("取得slackユーザ数: %d, err: %v", len(users), err)
 	if err != nil {
 		return err
 	}
@@ -75,7 +78,6 @@ func ConnectUserData() error {
 			log.Printf("ユーザ更新失敗: %s, err: %v", userName, err)
 			continue
 		}
-
 		log.Printf("SlackID と ChannelID を紐づけ: %s", userName)
 	}
 

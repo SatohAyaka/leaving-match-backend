@@ -40,6 +40,10 @@ func GetAllSlackUsers() ([]model.SlackUser, error) {
 			Name    string `json:"name"`
 			Deleted bool   `json:"deleted"`
 			IsBot   bool   `json:"is_bot"`
+			Profile struct {
+				DisplayName string `json:"display_name"`
+				RealName    string `json:"real_name"`
+			} `json:"profile"`
 		} `json:"members"`
 	}
 
@@ -56,7 +60,12 @@ func GetAllSlackUsers() ([]model.SlackUser, error) {
 		if m.Deleted || m.IsBot {
 			continue
 		}
-		users = append(users, model.SlackUser{ID: m.ID, Name: m.Name})
+		displayName := m.Profile.DisplayName
+		if displayName == "" {
+			displayName = m.Profile.RealName // 表示名が設定されていなければ実名
+		}
+
+		users = append(users, model.SlackUser{ID: m.ID, Name: displayName})
 	}
 
 	return users, nil
