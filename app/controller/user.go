@@ -205,15 +205,16 @@ func UserNameToBackendId(userName string) (int64, error) {
 }
 
 func StayWatchIdToChannelId(staywatchId int64) (string, error) {
-	var staywatchIdPtr = &staywatchId
-
 	userService := service.UserService{}
-	userData, err := userService.GetUser(0, staywatchIdPtr, nil, nil, nil)
+	userData, err := userService.GetUser(0, &staywatchId, nil, nil, nil)
 	if err != nil {
 		return "", err
 	}
 	if len(userData) == 0 {
-		return "", fmt.Errorf("no backendId found for staywatchId=%d", staywatchId)
+		return "", fmt.Errorf("user not found: %d", staywatchId)
+	}
+	if userData[0].ChannelId == nil {
+		return "", fmt.Errorf("ChannelId is nil for user: %d", staywatchId)
 	}
 	return *userData[0].ChannelId, nil
 }
