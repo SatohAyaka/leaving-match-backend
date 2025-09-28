@@ -54,16 +54,19 @@ func (BusTimeService) BusTimeToId(busTimeId int64, selectTime int64) (time.Time,
 		return time.Time{}, err
 	}
 
+	var t time.Time
 	switch selectTime {
 	case 1:
-		return bustimes.PreviousTime, nil
+		t = bustimes.PreviousTime
 	case 2:
-		return bustimes.NearestTime, nil
+		t = bustimes.NearestTime
 	case 3:
-		return bustimes.NextTime, nil
+		t = bustimes.NextTime
 	default:
 		return time.Time{}, fmt.Errorf("invalid selectTime: %d", selectTime)
 	}
+
+	return t.Add(-5 * time.Minute), nil
 }
 
 func (BusTimeService) GetLatestBusTime() (model.BusTime, error) {
