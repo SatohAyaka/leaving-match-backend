@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -28,10 +29,21 @@ type SlackEvent struct {
 func SendDMHandler(c *gin.Context) {
 	membersQuery := c.QueryArray("member")
 	busTimesQuery := c.QueryArray("bustime")
+	busTimes := make([]int, 0, len(busTimesQuery))
+	for _, t := range busTimesQuery {
+		mins, err := strconv.Atoi(t)
+		if err != nil {
+			log.Println("invalid bustime:", t, err)
+			continue
+		}
+		busTimes = append(busTimes, mins)
+	}
+
+	sort.Ints(busTimes)
 
 	busMessage := "乗れそうなバスを選択してください\n"
-	for i, minbustime := range busTimesQuery {
-		bustime, err := ParseQueryToTime(minbustime, "DM bustime")
+	for i, minbustime := range busTimes {
+		bustime, err := ParseQueryToTime(strconv.Itoa(minbustime), "DM bustime")
 		if err != nil {
 			log.Println("failed to parse bustime:", minbustime, "err:", err)
 			continue
