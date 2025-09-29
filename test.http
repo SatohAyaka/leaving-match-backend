@@ -1,5 +1,5 @@
-@baseURL= http://localhost:8085
-# @baseURL=https://leaving-match-backend.kajilab.dev
+# @baseURL= http://localhost:8085
+@baseURL=https://leaving-match-backend.kajilab.dev
 
 
 ### Recommended_Data
@@ -52,3 +52,6 @@ GET {{baseURL}}/api/user?staywatch=1
 
 ###
 POST {{baseURL}}/api/slack/notify?member=90&bustime=1160&bustime=1170&bustime=1180
+
+###
+POST {{baseURL}}/slack/connect?slack=ishii&staywatch=ishii.m

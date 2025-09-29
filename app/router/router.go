@@ -40,6 +40,7 @@ func Router() {
 
 		versionEngine.POST("/slack/notify", controller.SendDMHandler)
 		versionEngine.POST("/slack/event", controller.SlackEventHandler)
+		versionEngine.POST("/slack/connect", controller.ConnectDifferentNameUser)
 	}
 
 	r.Run(":8085")

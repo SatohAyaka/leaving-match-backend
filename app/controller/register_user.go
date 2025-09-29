@@ -4,8 +4,11 @@ import (
 	"SatohAyaka/leaving-match-backend/lib"
 	"SatohAyaka/leaving-match-backend/service"
 	"log"
+	"net/http"
 	"os"
 	"sync"
+
+	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -82,4 +85,47 @@ func ConnectUserData() error {
 	}
 
 	return nil
+}
+
+func ConnectDifferentNameUser(c *gin.Context) {
+	staywatchNameQuery := c.Query("staywatch")
+	slackNameQuery := c.Query("slack")
+	if staywatchNameQuery == "" || slackNameQuery == "" {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get name"})
+		return
+	}
+	users, err := service.GetAllSlackUsers()
+	if err != nil {
+		return
+	}
+	userService := service.UserService{}
+	for _, u := range users {
+		slackID := u.ID
+		userName := u.Name
+
+		if userName == slackNameQuery {
+			// DB から backendUserId を取得
+			dbUsers, err := userService.GetUser(0, nil, nil, nil, &staywatchNameQuery)
+			if err != nil || len(dbUsers) == 0 {
+				log.Printf("DBにユーザが存在しない: %s", staywatchNameQuery)
+				continue
+			}
+			backendUserID := dbUsers[0].BackendUserId
+
+			// DM チャンネルを開設（通知はされない）
+			channelID, err := service.OpenDM(slackID)
+			if err != nil {
+				log.Printf("DM開設失敗: %s, err: %v", userName, err)
+				continue
+			}
+
+			// DB 更新
+			_, err = userService.UpdateUser(backendUserID, nil, &slackID, &channelID, nil)
+			if err != nil {
+				log.Printf("ユーザ更新失敗: %s, err: %v", userName, err)
+				continue
+			}
+		}
+		log.Printf("SlackID と ChannelID を紐づけ: %s", userName)
+	}
 }
