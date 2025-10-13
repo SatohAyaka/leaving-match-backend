@@ -40,7 +40,17 @@ func CreateBusTimeHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	intEndTime := intPreviousTime - 15
+
+	now := time.Now()
+	currentMinutes := int64(now.Hour()*60 + now.Minute())
+
+	var intEndTime int64
+	if intPreviousTime-currentMinutes <= 5 {
+		intEndTime = currentMinutes + 5
+	} else {
+		intEndTime = intPreviousTime - 15
+	}
+
 	strEndTime := strconv.FormatInt(intEndTime, 10)
 	endTime, err := ParseQueryToTime(strEndTime, "endTime")
 	if err != nil {
