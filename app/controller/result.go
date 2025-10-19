@@ -30,7 +30,7 @@ func CreateResultHandler(c *gin.Context) {
 	bustimeService := service.BusTimeService{}
 	resultService := service.ResultService{}
 
-	var resultId int64
+	var resultData model.Result
 
 	if previous == 0 && nearest == 0 && next == 0 {
 		busTime, err := bustimeService.BusTimeToId(busTimeId, 2)
@@ -38,7 +38,7 @@ func CreateResultHandler(c *gin.Context) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
 			return
 		}
-		resultId, err = resultService.CreateResult(busTimeId, busTime, nearest)
+		resultData, err = resultService.CreateResult(busTimeId, busTime, nearest)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
 			return
@@ -49,7 +49,7 @@ func CreateResultHandler(c *gin.Context) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
 			return
 		}
-		resultId, err = resultService.CreateResult(busTimeId, busTime, previous)
+		resultData, err = resultService.CreateResult(busTimeId, busTime, previous)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
 			return
@@ -60,7 +60,7 @@ func CreateResultHandler(c *gin.Context) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
 			return
 		}
-		resultId, err = resultService.CreateResult(busTimeId, busTime, nearest)
+		resultData, err = resultService.CreateResult(busTimeId, busTime, nearest)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
 			return
@@ -71,14 +71,14 @@ func CreateResultHandler(c *gin.Context) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to get bustime"})
 			return
 		}
-		resultId, err = resultService.CreateResult(busTimeId, busTime, next)
+		resultData, err = resultService.CreateResult(busTimeId, busTime, next)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed to create bustime data"})
 			return
 		}
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"result_id": resultId})
+	c.JSON(http.StatusCreated, resultData)
 
 }
 

@@ -9,16 +9,16 @@ import (
 
 type ResultService struct{}
 
-func (ResultService) CreateResult(busTimeId int64, busTime time.Time, member int64) (int64, error) {
+func (ResultService) CreateResult(busTimeId int64, busTime time.Time, member int64) (model.Result, error) {
 	results := model.Result{
 		BusTimeId: busTimeId,
 		BusTime:   busTime,
 		Member:    member,
 	}
 	if err := lib.DB.Create(&results).Error; err != nil {
-		return 0, err
+		return model.Result{}, err
 	}
-	return results.ResultId, nil
+	return results, nil
 }
 
 func (ResultService) GetResult(busTimeId int64) (model.Result, error) {
