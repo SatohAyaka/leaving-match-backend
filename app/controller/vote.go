@@ -64,7 +64,7 @@ func CreateVoteHandler(c *gin.Context) {
 }
 
 func GetVoteHandler(c *gin.Context) {
-	busTimePass := c.Query("id")
+	busTimePass := c.Param("bustimeId")
 	if busTimePass == "" {
 		busTimePass = "0"
 	}
