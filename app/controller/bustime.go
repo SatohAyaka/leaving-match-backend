@@ -41,7 +41,7 @@ func CreateBusTimeHandler(c *gin.Context) {
 		return
 	}
 
-	now := time.Now()
+	now := time.Now().UTC().Add(9 * time.Hour)
 	currentMinutes := int64(now.Hour()*60 + now.Minute())
 
 	var intEndTime int64
