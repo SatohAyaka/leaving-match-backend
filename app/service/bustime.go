@@ -68,7 +68,7 @@ func (BusTimeService) BusTimeToId(busTimeId int64, selectTime int64) (time.Time,
 
 func (BusTimeService) GetLatestBusTime() (model.BusTime, error) {
 	var bustime model.BusTime
-	if err := lib.DB.Order("created_date DESC").First(&bustime).Error; err != nil {
+	if err := lib.DB.Order("bustime_id DESC").First(&bustime).Error; err != nil {
 		return model.BusTime{}, err
 	}
 	return bustime, nil

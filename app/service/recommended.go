@@ -31,7 +31,7 @@ func (RecommendedService) CreateRecommended(recommendedTime time.Time, memberIds
 
 func (RecommendedService) GetLatestRecommended() (model.Recommended, error) {
 	var latest model.Recommended
-	if err := lib.DB.Order("created_date DESC").First(&latest).Error; err != nil {
+	if err := lib.DB.Order("recommended_id DESC").First(&latest).Error; err != nil {
 		return model.Recommended{}, err
 	}
 	return latest, nil
