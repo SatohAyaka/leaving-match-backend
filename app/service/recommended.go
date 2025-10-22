@@ -11,7 +11,7 @@ type RecommendedService struct{}
 func (RecommendedService) CreateRecommended(recommendedTime time.Time, memberIds []int64) (model.RecommendedResponse, error) {
 	now := time.Now()
 	status := false
-	if diff := recommendedTime.Sub(now); diff > 0 && diff <= 50*time.Minute {
+	if diff := recommendedTime.Sub(now); diff > 10 && diff <= 50*time.Minute {
 		status = true
 	}
 	recommended := model.Recommended{
